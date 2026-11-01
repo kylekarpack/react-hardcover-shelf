@@ -121,9 +121,12 @@ const Template: StoryFn<StorybookProps> = (args) => {
   return <HardcoverShelf {...args} displayOptions={displayOptions} />;
 };
 
+// Set VITE_HARDCOVER_API_KEY in the environment to have the stories fetch real shelves
+const apiKey = import.meta.env.VITE_HARDCOVER_API_KEY ?? "";
+
 const Primary: StoryFn<StorybookProps> = Template.bind({});
 Primary.args = {
-  apiKey: "YOUR_API_KEY",
+  apiKey,
   userId: "kylekarpack",
   width: 100,
   limit: 12,

@@ -2,9 +2,9 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { HardcoverShelf } from "../src";
 
-// Replace this with a key from your Hardcover account settings (Account → API),
-// or point apiUrl at a proxy that adds the authorization header for you.
-const API_KEY = "YOUR_API_KEY";
+// Set this in the environment before starting the dev server, e.g.:
+//   VITE_HARDCOVER_API_KEY="YOUR_API_KEY" pnpm dev
+const API_KEY = import.meta.env.VITE_HARDCOVER_API_KEY ?? "YOUR_API_KEY";
 
 const container = document.getElementById("home");
 const root = createRoot(container as HTMLElement);

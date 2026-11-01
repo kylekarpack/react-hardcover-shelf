@@ -26,14 +26,7 @@ const Cover: FunctionComponent<{ book: Book; options?: Props }> = ({ book, optio
     }
   }, []);
 
-  let { imageUrl } = book;
-  if (!imageUrl) {
-    if (book.isbn) {
-      imageUrl = `https://images-na.ssl-images-amazon.com/images/P/${book.isbn}.01._SCLZZZZZZZ_.jpg`;
-    } else if (book.asin) {
-      imageUrl = `https://images-na.ssl-images-amazon.com/images/P/${book.asin}.01._SCLZZZZZZZ_.jpg`;
-    }
-  }
+  const { imageUrl } = book;
 
   const onError = () => setState({ error: true });
 
