@@ -20,7 +20,7 @@ pnpm install react-hardcover-shelf
 
 ## Usage
 
-Create a scoped API key from your Hardcover account ([Account → API](https://hardcover.app/account/api/keys/new?scope=read:library:public+read:me:content+read:catalog)), then pass it to the component:
+Create a scoped API key from your Hardcover account ([Account → API](https://hardcover.app/account/api/keys/new?scope=read:library:public)), then pass it to the component:
 
 ```jsx
 import React from "react";
@@ -35,15 +35,19 @@ When no `userId` is supplied, the shelf of the API key's owner is displayed. `us
 
 ### API key scopes
 
-Hardcover lets you pick exactly which scopes an API key grants. This widget only reads your public shelf data, so **create the key with read-only scopes**:
+Hardcover lets you pick exactly which scopes an API key grants. **`read:library:public` is the only scope the widget needs** for the default usage of displaying the shelf of the API key's owner:
 
-[Generate a scoped API key →](https://hardcover.app/account/api/keys/new?scope=read:library:public+read:me:content+read:catalog)
+[Generate a scoped API key →](https://hardcover.app/account/api/keys/new?scope=read:library:public)
 
-| Scope                 | What it grants                                                                  |
-| --------------------- | ------------------------------------------------------------------------------- |
-| `read:library:public` | Your public shelf entries (the books the widget displays)                       |
-| `read:me:content`     | Your public profile (id, username, name, avatar), used when `userId` is omitted |
-| `read:catalog`        | Hardcover's public book catalog (covers, authors, descriptions)                 |
+| Scope                 | What it grants                                                  |
+| --------------------- | --------------------------------------------------------------- |
+| `read:library:public` | Your public shelf entries (the books the widget displays)       |
+| `read:me:content`     | Your public profile (id, username, name, avatar)                |
+| `read:catalog`        | Hardcover's public book catalog (covers, authors, descriptions) |
+
+The additional scopes (`read:me:content` and `read:catalog`) are only necessary if you want to view someone else's public bookshelves, i.e. when passing the `userId` prop with another Hardcover user. The link below pre-selects everything:
+
+[Generate an API key for public shelves →](https://hardcover.app/account/api/keys/new?scope=read:library:public+read:me:content+read:catalog)
 
 With these scopes, an exposed key cannot modify your library, cannot read private or followers-only entries, and cannot see your email. Do not select any write scopes.
 
