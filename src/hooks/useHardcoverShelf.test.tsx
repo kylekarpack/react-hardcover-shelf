@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import { afterEach, describe, it, expect, vi } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vite-plus/test";
 import useHardcoverShelf from "./useHardcoverShelf";
 
 const fetchStub = (data: unknown) => {

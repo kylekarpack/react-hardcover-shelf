@@ -12,7 +12,7 @@ export type SortKey =
   | "pages";
 
 type GroupBy = "year";
-type Shelf = "read" | "currently-reading" | "to-read" | string;
+type Shelf = "read" | "currently-reading" | "to-read";
 
 type HideDetails = { [Property in keyof Book]?: boolean };
 

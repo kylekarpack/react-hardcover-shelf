@@ -1,5 +1,5 @@
 import { act, render, waitFor } from "@testing-library/react";
-import { afterEach, describe, it, expect, vi } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vite-plus/test";
 import HardcoverShelf from "./HardcoverShelf";
 
 const respondWith = (data: unknown) => {

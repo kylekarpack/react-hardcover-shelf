@@ -1,9 +1,11 @@
 {
-  "include": ["src/index.ts", "src/globals.d.ts"],
+  "include": ["src", "stories", ".storybook", "sample", "vitest.setup.ts"],
   "compilerOptions": {
     "jsx": "react-jsx",
-    "target": "es5",
-    "module": "commonjs",
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "preserve",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

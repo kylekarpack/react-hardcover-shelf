@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom"; // needed for testing-library assertions
-import { vi } from "vitest";
+import { vi } from "vite-plus/test";
 
 // Mock fetch
 const fetch = vi.fn(() =>
@@ -11,12 +11,15 @@ const fetch = vi.fn(() =>
 vi.stubGlobal("fetch", fetch);
 
 // Mock IntersectionObserver
-const IntersectionObserverMock = vi.fn(() => ({
-  disconnect: vi.fn(),
-  observe: vi.fn(),
-  takeRecords: vi.fn(),
-  unobserve: vi.fn(),
-}));
+// Note: the implementation must be a non-arrow function so the mock stays constructable
+const IntersectionObserverMock = vi.fn(function () {
+  return {
+    disconnect: vi.fn(),
+    observe: vi.fn(),
+    takeRecords: vi.fn(),
+    unobserve: vi.fn(),
+  };
+});
 
 vi.stubGlobal("IntersectionObserver", IntersectionObserverMock);
 

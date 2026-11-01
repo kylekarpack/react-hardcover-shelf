@@ -81,3 +81,4 @@ test-report.xml
 docs-build/
 
 .DS_Store
+.vitest/

@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 import { ALL_GROUP_TITLE, fetchAllBooks } from "./api";
 import { HARDCOVER_API_URL } from "./graphql";
 

@@ -1,10 +1,44 @@
+// vp migrate: merged .oxlintrc.json (70071b33518c2408813894b9bc30b90f).
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vitest/config";
+import { defineConfig, lazyPlugins } from "vite-plus";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import dts from "vite-plugin-dts";
 
 export default defineConfig({
+  staged: {
+    "*": "vp check --fix",
+  },
+  fmt: {
+    ignorePatterns: [],
+  },
+  lint: {
+    plugins: ["typescript", "unicorn", "oxc"],
+    categories: {
+      correctness: "error",
+    },
+    rules: {
+      "vite-plus/prefer-vite-plus-imports": "error",
+    },
+    env: {
+      builtin: true,
+    },
+    options: {
+      typeAware: true,
+      typeCheck: true,
+    },
+    jsPlugins: [
+      {
+        name: "vite-plus",
+        specifier: "vite-plus/oxlint-plugin",
+      },
+    ],
+  },
   test: {
+    // Vitest v4 compatibility: preserve mock call history.
+    // Remove after tests no longer rely on calls from setup or earlier tests.
+    // https://viteplus.dev/guide/vitest-v5#remove-unneeded-compatibility-settings
+    // https://vitest.dev/guide/migration/#clearmocks-is-enabled-by-default
+    clearMocks: false,
     globals: true,
     environment: "jsdom",
     setupFiles: "./vitest.setup.ts",
@@ -14,7 +48,11 @@ export default defineConfig({
       provider: "v8",
     },
   },
-  plugins: [react(), dts({ entryRoot: "src", include: ["src"] }), cssInjectedByJsPlugin()],
+  plugins: lazyPlugins(() => [
+    react(),
+    dts({ entryRoot: "src", include: ["src"] }),
+    cssInjectedByJsPlugin(),
+  ]),
   build: {
     outDir: "./dist",
     lib: {

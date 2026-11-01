@@ -22,7 +22,7 @@ const useHardcoverShelf = (props: Props) => {
   };
 
   useEffect(() => {
-    refresh();
+    void refresh();
   }, [apiKey, apiUrl, userId, limit, order, search, shelf, sort]);
 
   return { books, loading, error };
