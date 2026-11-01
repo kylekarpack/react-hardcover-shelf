@@ -48,7 +48,7 @@ When no user ID is supplied, the shelf of the API key's owner is displayed.
 | -------------- | -------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------ |
 | apiKey         | string   | An API key from a Hardcover account's settings page; a "Bearer" prefix is optional. Required unless apiUrl is provided. | -                        |
 | apiUrl         | string   | An alternative endpoint to send queries to; useful for proxies that keep the API key server-side                        | Hardcover API            |
-| userId         | string   | The numeric Hardcover user ID whose shelf to fetch                                                                      | The owner of the API key |
+| userId         | string   | The Hardcover user ID or username whose shelf to fetch                                                                  | The owner of the API key |
 | shelf          | string   | The shelf from which to fetch books ("read", "currently-reading", or "to-read")                                         | read                     |
 | sort           | string   | The field by which to sort the results returned (title, author, rating, avg_rating, date_read, date_added, or pages)    | date_read                |
 | order          | string   | The direction in which to sort the results ("a" for ascending or "d" for descending)                                    | d                        |

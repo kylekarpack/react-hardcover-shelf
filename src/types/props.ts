@@ -33,7 +33,7 @@ export type Props = {
    * proxy that keeps the API key server-side.
    */
   apiUrl?: string;
-  /** The user ID for whom to fetch books; defaults to the owner of the API key */
+  /** The user ID or username for whom to fetch books; defaults to the owner of the API key */
   userId?: string;
   /** The shelf from which to fetch books */
   shelf?: Shelf;

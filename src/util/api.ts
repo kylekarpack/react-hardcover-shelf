@@ -102,8 +102,20 @@ const fetchUserBooks = async (props: Props): Promise<UserBook[]> => {
   }
 
   const limit = props.limit ?? 10;
-  const search = props.userId ? `user_id: { _eq: ${parseUserId(props.userId)} }, ` : "";
-  const userBooks = `user_books(where: { ${search}status_id: { _eq: ${statusId} } }, limit: ${limit}, order_by: { date_added: desc })`;
+
+  // The userId may be a numeric ID or a username; usernames are filtered directly
+  // through the user relation so only one request is needed
+  let userClause = "";
+  if (props.userId) {
+    if (Number.isNaN(parseInt(props.userId, 10))) {
+      userClause = `user: { username: { _eq: "${escapeGraphQLString(props.userId)}" } }, `;
+    } else {
+      userClause = `user_id: { _eq: ${parseInt(props.userId, 10)} }, `;
+    }
+  }
+
+  const where = `{ ${userClause}status_id: { _eq: ${statusId} } }`;
+  const userBooks = `user_books(where: ${where}, limit: ${limit}, order_by: { date_added: desc })`;
 
   // When no user ID is supplied, query the books of the owner of the API key
   const query = props.userId
@@ -119,12 +131,9 @@ const fetchUserBooks = async (props: Props): Promise<UserBook[]> => {
   return data?.user_books ?? data?.me?.user_books ?? [];
 };
 
-const parseUserId = (userId: string): number | null => {
-  const parsed = parseInt(userId, 10);
-  if (Number.isNaN(parsed)) {
-    throw new Error(`The "userId" prop must be a numeric Hardcover user ID, but got "${userId}"`);
-  }
-  return parsed;
+/** Escape a string for safe inlining into a GraphQL query */
+const escapeGraphQLString = (value: string): string => {
+  return value.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
 };
 
 /** Convert a user_books row to a Book for display */

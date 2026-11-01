@@ -212,6 +212,16 @@ describe("api", () => {
     expect(lastOptions?.body).not.toContain("me {");
   });
 
+  it("queries by username in a single request", async () => {
+    respondWith({ data: { user_books: sampleRows(2) } });
+
+    const [bookGroup] = await fetchAllBooks({ apiKey: "my-api-key", userId: "kylekarpack" });
+
+    expect(bookGroup.books.length).toBe(2);
+    expect(lastOptions?.body).toContain('user: { username: { _eq: \\"kylekarpack\\" } }');
+    expect(lastOptions?.body).not.toContain("me {");
+  });
+
   it("defaults to the currently-reading shelf", async () => {
     respondWith({ data: { me: { user_books: [] } } });
 
