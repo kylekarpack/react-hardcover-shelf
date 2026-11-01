@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { BookGroup, Props } from "../types";
 import { fetchAllBooks } from "../util";
 
-const useGoodreadsShelf = (props: Props) => {
-  const { userId, limit, order, search, shelf, sort } = props;
+const useHardcoverShelf = (props: Props) => {
+  const { apiKey, apiUrl, userId, limit, order, search, shelf, sort } = props;
   const [books, setBooks] = useState<BookGroup[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -13,8 +13,7 @@ const useGoodreadsShelf = (props: Props) => {
     setError(null);
 
     try {
-      const books = await fetchAllBooks(props);
-      setBooks(books);
+      setBooks(await fetchAllBooks(props));
     } catch (err: unknown) {
       setError(err as Error);
     } finally {
@@ -23,13 +22,10 @@ const useGoodreadsShelf = (props: Props) => {
   };
 
   useEffect(() => {
-    if (!userId) {
-      return;
-    }
     refresh();
-  }, [userId, limit, order, search, shelf, sort]);
+  }, [apiKey, apiUrl, userId, limit, order, search, shelf, sort]);
 
   return { books, loading, error };
 };
 
-export default useGoodreadsShelf;
+export default useHardcoverShelf;

@@ -1,40 +1,11 @@
 import { CSSProperties } from "react";
 import { Book } from "./book";
 
-type SortKey =
-  | "title"
-  | "author"
-  | "cover"
-  | "rating"
-  | "year_pub"
-  | "date_pub"
-  | "date_pub_edition"
-  | "date_started"
-  | "date_read"
-  | "date_updated"
-  | "date_added"
-  | "recommender"
-  | "avg_rating"
-  | "num_ratings"
-  | "review"
-  | "read_count"
-  | "votes"
-  | "random"
-  | "comments"
-  | "notes"
-  | "isbn"
-  | "isbn13"
-  | "asin"
-  | "num_pages"
-  | "format"
-  | "position"
-  | "shelves"
-  | "owned"
-  | "date_purchased"
-  | "purchase_location"
-  | "condition";
+/** The fields available for sorting on Hardcover */
+export type SortKey = "title" | "author" | "rating" | "avg_rating" | "date_read" | "date_added" | "pages";
 
 type GroupBy = "year";
+type Shelf = "read" | "currently-reading" | "to-read" | string;
 
 type HideDetails = { [Property in keyof Book]?: boolean };
 
@@ -45,10 +16,20 @@ type DisplayOptions = {
 };
 
 export type Props = {
-  /** The user ID for whom to fetch books */
-  userId: string;
+  /**
+   * An API key generated from a Hardcover account's settings page.
+   * A "Bearer" prefix is optional. Either apiKey or apiUrl is required.
+   */
+  apiKey?: string;
+  /**
+   * An alternative endpoint for the Hardcover API; useful when running a
+   * proxy that keeps the API key server-side.
+   */
+  apiUrl?: string;
+  /** The user ID for whom to fetch books; defaults to the owner of the API key */
+  userId?: string;
   /** The shelf from which to fetch books */
-  shelf?: "read" | "currently-reading" | "to-read" | string;
+  shelf?: Shelf;
   /** Minimum width allowed for each book */
   width?: string | number;
   /** The field by which to sort the results returned */
@@ -57,7 +38,7 @@ export type Props = {
   order?: "a" | "d";
   /** The maximum number of books to be returned */
   limit?: number;
-  /** Optional search text */
+  /** Optional search text; filters fetched books by title and author */
   search?: string;
   /** Shelf display options */
   displayOptions?: DisplayOptions;

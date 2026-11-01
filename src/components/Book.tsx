@@ -17,12 +17,12 @@ const Details: FunctionComponent<{ book: BookType; options?: Props }> = ({ book,
   };
 
   return (
-    <div className={`rgs-details ${styles.details}`}>
-      {shouldShow("title") && <div className={`rgs-title ${styles.title}`}>{book.title}</div>}
+    <div className={`rhs-details ${styles.details}`}>
+      {shouldShow("title") && <div className={`rhs-title ${styles.title}`}>{book.title}</div>}
       {shouldShow("subtitle") && book.subtitle ? (
-        <div className={`rgs-subtitle ${styles.subtitle}`}>{book.subtitle}</div>
+        <div className={`rhs-subtitle ${styles.subtitle}`}>{book.subtitle}</div>
       ) : null}
-      {shouldShow("author") && <div className={`rgs-author ${styles.author}`}>{book.author}</div>}
+      {shouldShow("author") && <div className={`rhs-author ${styles.author}`}>{book.author}</div>}
       {shouldShow("rating") && <Rating stars={book.rating} />}
     </div>
   );
@@ -35,7 +35,7 @@ const Book: FunctionComponent<{ book: BookType; options?: Props }> = ({ book, op
 
   return (
     <div>
-      <div className={`rgs-book ${styles.book}`} title={book.title}>
+      <div className={`rhs-book ${styles.book}`} title={book.title}>
         <a href={book.link} target="_blank" rel="nofollow noreferrer">
           <Cover book={book} options={options} />
         </a>

@@ -57,16 +57,16 @@ const Cover: FunctionComponent<{ book: Book; options?: Props }> = ({ book, optio
   );
 
   return (
-    <div ref={root} className={`rgs-cover ${styles.cover}`} style={getBackground(imageUrl!)}>
+    <div ref={root} className={`rhs-cover ${styles.cover}`} style={getBackground(imageUrl!)}>
       {state.error ? (
-        <div className="rgs-placeholder" data-testid="placeholder">
+        <div className="rhs-placeholder" data-testid="placeholder">
           <Placeholder />
         </div>
       ) : (
         <div>
           <img
             alt={book.title}
-            className={`rgs-image ${styles.image}`}
+            className={`rhs-image ${styles.image}`}
             src={imageUrl}
             loading="lazy"
             onError={onError}

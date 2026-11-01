@@ -1,8 +1,15 @@
 {
-  "name": "react-goodreads-shelf",
+  "name": "react-hardcover-shelf",
+  "version": "0.0.1",
+  "private": false,
+  "description": "A React widget for displaying a Hardcover bookshelf",
+  "license": "MIT",
+  "author": "Kyle Karpack <kylekarpack+rhs@gmail.com>",
+  "repository": "https://github.com/kylekarpack/react-hardcover-shelf",
+  "files": [
+    "dist"
+  ],
   "type": "module",
-  "version": "3.1.6",
-  "description": "A React widget for displaying a user's public book shelf",
   "main": "./dist/index.umd.js",
   "module": "./dist/index.es.js",
   "typings": "./dist/index.d.ts",
@@ -18,17 +25,26 @@
       }
     }
   },
-  "files": [
-    "dist"
-  ],
-  "repository": "https://github.com/kylekarpack/react-goodreads-shelf",
-  "author": "Kyle Karpack <kylekarpack+rgg@gmail.com>",
-  "license": "MIT",
-  "private": false,
-  "engines": {
-    "node": ">=14"
+  "scripts": {
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest --reporter=verbose",
+    "test:related": "vitest related",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "prepublish": "pnpm build",
+    "storybook": "STORYBOOK=true storybook dev -p 6006",
+    "build-storybook": "STORYBOOK=true storybook build -o docs-build",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
+    "fix": "oxfmt --write . && oxlint --fix",
+    "clean": "rm -rf dist",
+    "compile": "tsc",
+    "release": "release-it"
   },
-  "engineStrict": true,
   "devDependencies": {
     "@storybook/addon-actions": "^7.0.12",
     "@storybook/addon-controls": "^7.0.12",
@@ -49,10 +65,9 @@
     "@vitejs/plugin-react": "^2.1.0",
     "@vitest/coverage-c8": "^0.33.0",
     "c8": "^12.0.0",
-    "eslint-plugin-storybook": "^0.6.12",
-    "gts": "^3.1.0",
     "jsdom": "^19.0.0",
-    "prettier": "^2.5.1",
+    "oxfmt": "^0.75.0",
+    "oxlint": "^1.90.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "release-it": "^21.1.2",
@@ -65,23 +80,10 @@
     "vite-plugin-dts": "^2.3.0",
     "vitest": "^0.30.1"
   },
-  "scripts": {
-    "test": "vitest run",
-    "test:coverage": "vitest run --coverage",
-    "test:watch": "vitest --reporter=verbose",
-    "test:related": "vitest related",
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "prepublish": "npm run build",
-    "storybook": "STORYBOOK=true storybook dev -p 6006",
-    "build-storybook": "STORYBOOK=true storybook build -o docs-build",
-    "lint": "gts lint src/**/*.{ts,tsx}",
-    "clean": "gts clean",
-    "compile": "tsc",
-    "fix": "gts fix src/**/*.{ts,tsx}",
-    "release": "release-it"
+  "engines": {
+    "node": ">=26"
   },
+  "engineStrict": true,
   "release-it": {
     "github": {
       "release": true,

@@ -1,36 +1,59 @@
-import { Book, BookGroup, FetchResults, Props, Status } from "../types";
-import { getUrl } from "./get-url";
-import { getBooksFromHtml } from "./html-utils";
+import { Book, BookGroup, Props, ShelfQueryData, SortKey, UserBook } from "../types";
+import { runQuery } from "./graphql";
 
-const GOODREADS_PAGE_SIZE = 30;
+/** Map of shelf names to the reading status IDs used by Hardcover */
+export const STATUS_IDS: { [shelf: string]: number } = {
+  "to-read": 1,
+  "want-to-read": 1,
+  "currently-reading": 2,
+  read: 3
+};
+
+/** The fields to select from each user_books row */
+const USER_BOOK_FIELDS = `
+  rating
+  date_added
+  last_read_date
+  user_book_reads(order_by: { id: desc }, limit: 1) {
+    started_at
+    finished_at
+  }
+  book {
+    id
+    slug
+    title
+    subtitle
+    description
+    pages
+    rating
+    release_year
+    image {
+      url
+    }
+    contributions {
+      author {
+        name
+      }
+    }
+  }
+`;
 
 export const ALL_GROUP_TITLE = "All";
 
 export const fetchAllBooks = async (props: Props): Promise<BookGroup[]> => {
-  // Get first page
-  const firstPage = await fetchPage(1, props);
-  const maxBooks = Math.min(props.limit ?? 10, firstPage.status.total);
-  const maxPages = Math.ceil(maxBooks / GOODREADS_PAGE_SIZE);
-  const promises: Promise<FetchResults>[] = [];
+  let books = (await fetchUserBooks(props)).map(rowToBook);
 
-  for (let i = 2; i <= maxPages; i++) {
-    promises.push(fetchPage(i, props));
+  // Optionally filter the books by search text
+  if (props.search) {
+    books = books.filter((book) => matchesSearch(book, props.search || ""));
   }
-
-  const data = await Promise.all(promises);
-
-  data.sort((a, b) => {
-    return a.status.end - b.status.end;
-  });
-
-  let books = data.reduce((prev, cur) => {
-    return prev.concat(cur.books);
-  }, firstPage.books);
 
   // Optionally filter the books
   if (props.filter) {
     books = books.filter(props.filter);
   }
+
+  books = sortBooks(books, props.sort || "date_read", props.order);
 
   if (props.limit) {
     books = books.slice(0, props.limit);
@@ -65,46 +88,97 @@ export const fetchAllBooks = async (props: Props): Promise<BookGroup[]> => {
   }
 };
 
-const fetchPage = async (page: number, props: Props): Promise<FetchResults> => {
-  // Get the books from Goodreads
-  const url = getUrl(props, page);
-  url.searchParams.append("page", String(page));
-  const response = await window.fetch(url.toString(), { headers: { accept: "text/javascript" } });
-
-  // Simulate success if we get a 204 No Content response
-  if (response.status === 204) {
-    return {
-      books: [],
-      status: {
-        end: page * 30,
-        total: 0
-      }
-    };
+/** Fetch the books matching the shelf settings from the Hardcover API */
+const fetchUserBooks = async (props: Props): Promise<UserBook[]> => {
+  if (!props.apiKey && !props.apiUrl) {
+    throw new Error('An "apiKey" or "apiUrl" prop is required to fetch from the Hardcover API');
   }
 
-  const responseBody = await response.text();
-  const { html, status } = parseJsonP(responseBody);
-  const table = `<table>${html}</table>`;
-  const books = getBooksFromHtml(table, props.width);
+  const statusId = STATUS_IDS[props.shelf || "read"];
+  if (statusId === undefined) {
+    throw new Error(`Unsupported shelf "${props.shelf}". Try "read", "currently-reading", or "to-read"`);
+  }
+
+  const limit = props.limit ?? 10;
+  const search = props.userId ? `user_id: { _eq: ${parseUserId(props.userId)} }, ` : "";
+  const userBooks = `user_books(where: { ${search}status_id: { _eq: ${statusId} } }, limit: ${limit}, order_by: { date_added: desc })`;
+
+  // When no user ID is supplied, query the books of the owner of the API key
+  const query = props.userId
+    ? `{ ${userBooks} { ${USER_BOOK_FIELDS} } }`
+    : `{ me { ${userBooks} { ${USER_BOOK_FIELDS} } } }`;
+
+  const data = await runQuery<ShelfQueryData>({ apiKey: props.apiKey, apiUrl: props.apiUrl, query });
+
+  return data?.user_books ?? data?.me?.user_books ?? [];
+};
+
+const parseUserId = (userId: string): number | null => {
+  const parsed = parseInt(userId, 10);
+  if (Number.isNaN(parsed)) {
+    throw new Error(`The "userId" prop must be a numeric Hardcover user ID, but got "${userId}"`);
+  }
+  return parsed;
+};
+
+/** Convert a user_books row to a Book for display */
+const rowToBook = (row: UserBook): Book => {
+  const authors = (row.book.contributions || [])
+    .map((contribution) => contribution?.author?.name || "")
+    .filter(Boolean);
+  const read = row.user_book_reads?.[0];
+
   return {
-    books,
-    status
+    id: String(row.book.id),
+    title: row.book.title || "",
+    subtitle: row.book.subtitle || "",
+    description: row.book.description || "",
+    author: authors[0],
+    authors: authors.map((name) => ({ name })),
+    imageUrl: row.book.image?.url,
+    link: `https://hardcover.app/books/${row.book.slug ?? row.book.id}`,
+    rating: row.rating,
+    avgRating: row.book.rating,
+    pages: row.book.pages,
+    releaseYear: row.book.release_year,
+    dateRead: read?.finished_at
+      ? new Date(read.finished_at)
+      : row.last_read_date
+        ? new Date(row.last_read_date)
+        : undefined,
+    dateAdded: row.date_added ? new Date(row.date_added) : undefined
   };
 };
 
-const parseJsonP = (jsonp: string): { html: string; status: Status } => {
-  const [html, status] = jsonp.split("\n");
+const matchesSearch = (book: Book, search: string): boolean => {
+  const term = search.toLowerCase();
+  const fields = [book.title, book.subtitle, book.author, ...(book.authors || []).map((author) => author.name)];
+  return fields.some((field) => field?.toLowerCase().includes(term));
+};
 
-  // eslint-disable-next-line quotes
-  const json = html.replace('Element.insert("booksBody", ', "").replace(" });", "}").replace("bottom", '"bottom"');
-  const output: string = JSON.parse(json).bottom;
+const SORT_FIELDS: { [key in SortKey]: (book: Book) => number | string | undefined } = {
+  title: (book) => book.title?.toLowerCase(),
+  author: (book) => book.author?.toLowerCase(),
+  rating: (book) => book.rating,
+  avg_rating: (book) => book.avgRating,
+  date_read: (book) => book.dateRead?.getTime(),
+  date_added: (book) => book.dateAdded?.getTime(),
+  pages: (book) => book.pages
+};
 
-  const matches = status.match(/(?<end>\d*) of (?<total>\d*) loaded/);
-  return {
-    html: output,
-    status: {
-      end: parseInt(matches?.groups?.end ?? "0"),
-      total: parseInt(matches?.groups?.total ?? "0")
+/** Sort the books client-side, since some sort fields are not directly on user_books */
+const sortBooks = (books: Book[], sort: SortKey, order?: "a" | "d"): Book[] => {
+  const direction = order === "a" ? 1 : -1;
+  const getter = SORT_FIELDS[sort] || SORT_FIELDS.date_read;
+
+  return [...books].sort((a, b) => {
+    const first = getter(a);
+    const second = getter(b);
+
+    if (typeof first === "string" || typeof second === "string") {
+      return String(first || "").localeCompare(String(second || "")) * direction;
     }
-  };
+
+    return ((first || 0) - (second || 0)) * direction;
+  });
 };

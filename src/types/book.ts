@@ -7,13 +7,16 @@ export type Book = {
   description?: string;
   author?: string;
   authors?: {
-    author: {
-      name: string;
-    };
-  };
+    name: string;
+  }[];
   imageUrl?: string;
   link?: string;
+  /** The user's rating from 0-5 */
   rating?: number;
+  /** The average community rating from 0-5 */
+  avgRating?: number;
+  pages?: number;
+  releaseYear?: number;
   dateRead?: Date;
   dateAdded?: Date;
 };
