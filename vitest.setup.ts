@@ -1,4 +1,5 @@
-import "@testing-library/jest-dom"; // needed for testing-library assertions
+// needed for testing-library assertions; targets the underlying vitest assertion types
+import "@testing-library/jest-dom/vitest"; // needed for testing-library assertions
 import { vi } from "vite-plus/test";
 
 // Mock fetch

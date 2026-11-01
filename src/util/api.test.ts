@@ -226,7 +226,10 @@ describe("api", () => {
 
   it("errors on unsupported shelf names", async () => {
     await expect(
-      fetchAllBooks({ apiKey: "key", shelf: "currently-reading-in-paris" }),
+      fetchAllBooks({
+        apiKey: "key",
+        shelf: "currently-reading-in-paris" as never,
+      }),
     ).rejects.toThrow(/Unsupported shelf/);
   });
 

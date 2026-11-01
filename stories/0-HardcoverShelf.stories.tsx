@@ -101,7 +101,7 @@ type StorybookProps = Props & {
 
 // Map from a Storybook control value to component props
 const mapHide = (toHide: string[]): Record<string, boolean> => {
-  const output = {};
+  const output: Record<string, boolean> = {};
   for (let key of toHide || []) {
     output[key] = true;
   }
