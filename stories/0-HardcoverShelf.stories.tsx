@@ -1,5 +1,4 @@
 import type { Meta, StoryFn } from "@storybook/react";
-import React from "react";
 import HardcoverShelf from "../src";
 import { Props } from "../src/types";
 
@@ -125,7 +124,7 @@ const Template: StoryFn<StorybookProps> = (args) => {
 const Primary: StoryFn<StorybookProps> = Template.bind({});
 Primary.args = {
   apiKey: "YOUR_API_KEY",
-  userId: "10714",
+  userId: "kylekarpack",
   width: 100,
   limit: 12,
   shelf: "read",
