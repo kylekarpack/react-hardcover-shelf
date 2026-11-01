@@ -2,7 +2,6 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig, lazyPlugins } from "vite-plus";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
-import dts from "vite-plugin-dts";
 
 export default defineConfig({
   staged: {
@@ -35,7 +34,7 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    environment: "jsdom",
+    environment: "happy-dom",
     setupFiles: "./vitest.setup.ts",
     coverage: {
       reporter: ["lcov", "text", "html"],
@@ -43,11 +42,7 @@ export default defineConfig({
       provider: "v8",
     },
   },
-  plugins: lazyPlugins(() => [
-    react(),
-    dts({ entryRoot: "src", include: ["src"] }),
-    cssInjectedByJsPlugin(),
-  ]),
+  plugins: lazyPlugins(() => [react(), cssInjectedByJsPlugin()]),
   build: {
     outDir: "./dist",
     lib: {
@@ -58,12 +53,9 @@ export default defineConfig({
     },
     minify: "esbuild",
     rolldownOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
       external: ["react", "react-dom"],
       output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
+        // Provide global variables to use in the UMD build for externalized deps
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
