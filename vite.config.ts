@@ -57,7 +57,7 @@ export default defineConfig({
       name: "index",
     },
     minify: "esbuild",
-    rollupOptions: {
+    rolldownOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library
       external: ["react", "react-dom"],

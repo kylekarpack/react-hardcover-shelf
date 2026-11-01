@@ -61,8 +61,12 @@ When no user ID is supplied, the shelf of the API key's owner is displayed.
 
 ## Development
 
-- `pnpm start` to watch changes and build
+This project uses [Vite+](https://viteplus.dev), the unified toolchain that bundles Vite, Vitest, linting, and formatting behind one CLI:
+
+- `pnpm dev` to run the demo page dev server
 - `pnpm storybook` to launch storybook for testing
+- `pnpm test` to run the test suite
+- `pnpm check` to format-check, lint, and type-check everything
 
 ## Contribution
 
