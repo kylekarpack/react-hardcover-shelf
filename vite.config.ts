@@ -11,8 +11,8 @@ export default defineConfig({
     coverage: {
       reporter: ["lcov", "text", "html"],
       exclude: ["vitest.setup.ts", "**/*.test.{ts,tsx}"],
-      provider: "c8"
-    }
+      provider: "c8",
+    },
   },
   plugins: [react(), dts({ entryRoot: "src", include: ["src"] }), cssInjectedByJsPlugin()],
   build: {
@@ -21,7 +21,7 @@ export default defineConfig({
       entry: "./src/index.ts",
       formats: ["cjs", "es", "umd"],
       fileName: (format) => `index.${format}.js`,
-      name: "index"
+      name: "index",
     },
     minify: "esbuild",
     rollupOptions: {
@@ -33,10 +33,10 @@ export default defineConfig({
         // for externalized deps
         globals: {
           react: "React",
-          "react-dom": "ReactDOM"
+          "react-dom": "ReactDOM",
         },
-        exports: "named"
-      }
-    }
-  }
+        exports: "named",
+      },
+    },
+  },
 });

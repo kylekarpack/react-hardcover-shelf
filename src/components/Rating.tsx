@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 
 const Rating: FunctionComponent<{ stars?: number }> = ({ stars }) => {
   if (stars) {
-    const arr = new Array(stars).fill("★");
+    const arr = Array.from({ length: stars }, () => "★");
     return (
       <div role="presentation">
         {arr.map((el, i) => (

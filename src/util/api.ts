@@ -6,7 +6,7 @@ export const STATUS_IDS: { [shelf: string]: number } = {
   "to-read": 1,
   "want-to-read": 1,
   "currently-reading": 2,
-  read: 3
+  read: 3,
 };
 
 /** The fields to select from each user_books row */
@@ -71,7 +71,7 @@ export const fetchAllBooks = async (props: Props): Promise<BookGroup[]> => {
     for (const key in grouped) {
       groups.push({
         title: key,
-        books: grouped[key]
+        books: grouped[key],
       });
     }
     groups.sort((a, b) => {
@@ -82,8 +82,8 @@ export const fetchAllBooks = async (props: Props): Promise<BookGroup[]> => {
     return [
       {
         title: ALL_GROUP_TITLE,
-        books
-      }
+        books,
+      },
     ];
   }
 };
@@ -96,7 +96,9 @@ const fetchUserBooks = async (props: Props): Promise<UserBook[]> => {
 
   const statusId = STATUS_IDS[props.shelf || "read"];
   if (statusId === undefined) {
-    throw new Error(`Unsupported shelf "${props.shelf}". Try "read", "currently-reading", or "to-read"`);
+    throw new Error(
+      `Unsupported shelf "${props.shelf}". Try "read", "currently-reading", or "to-read"`,
+    );
   }
 
   const limit = props.limit ?? 10;
@@ -108,7 +110,11 @@ const fetchUserBooks = async (props: Props): Promise<UserBook[]> => {
     ? `{ ${userBooks} { ${USER_BOOK_FIELDS} } }`
     : `{ me { ${userBooks} { ${USER_BOOK_FIELDS} } } }`;
 
-  const data = await runQuery<ShelfQueryData>({ apiKey: props.apiKey, apiUrl: props.apiUrl, query });
+  const data = await runQuery<ShelfQueryData>({
+    apiKey: props.apiKey,
+    apiUrl: props.apiUrl,
+    query,
+  });
 
   return data?.user_books ?? data?.me?.user_books ?? [];
 };
@@ -146,13 +152,18 @@ const rowToBook = (row: UserBook): Book => {
       : row.last_read_date
         ? new Date(row.last_read_date)
         : undefined,
-    dateAdded: row.date_added ? new Date(row.date_added) : undefined
+    dateAdded: row.date_added ? new Date(row.date_added) : undefined,
   };
 };
 
 const matchesSearch = (book: Book, search: string): boolean => {
   const term = search.toLowerCase();
-  const fields = [book.title, book.subtitle, book.author, ...(book.authors || []).map((author) => author.name)];
+  const fields = [
+    book.title,
+    book.subtitle,
+    book.author,
+    ...(book.authors || []).map((author) => author.name),
+  ];
   return fields.some((field) => field?.toLowerCase().includes(term));
 };
 
@@ -163,7 +174,7 @@ const SORT_FIELDS: { [key in SortKey]: (book: Book) => number | string | undefin
   avg_rating: (book) => book.avgRating,
   date_read: (book) => book.dateRead?.getTime(),
   date_added: (book) => book.dateAdded?.getTime(),
-  pages: (book) => book.pages
+  pages: (book) => book.pages,
 };
 
 /** Sort the books client-side, since some sort fields are not directly on user_books */

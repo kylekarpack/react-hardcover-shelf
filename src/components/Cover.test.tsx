@@ -5,7 +5,7 @@ import Cover from "./Cover";
 describe("cover component", () => {
   const book: Book = {
     id: "1",
-    title: "test"
+    title: "test",
   };
 
   it("renders with no props", () => {

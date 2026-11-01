@@ -1,11 +1,13 @@
-# react-goodreads-shelf
-![build](https://github.com/kylekarpack/react-goodreads-shelf/workflows/build/badge.svg) ![CodeQL](https://github.com/kylekarpack/react-goodreads-shelf/workflows/CodeQL/badge.svg)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=kylekarpack_react-goodreads-shelf&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=kylekarpack_react-goodreads-shelf) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=kylekarpack_react-goodreads-shelf&metric=coverage)](https://sonarcloud.io/dashboard?id=kylekarpack_react-goodreads-shelf)
+# react-hardcover-shelf
 
-This React component allows you to display a public Goodreads shelf in a React application. It's a lot like the Goodreads JavaScript widget, but allows for more customization, better async loading, and React-like usage.
+![build](https://github.com/kylekarpack/react-hardcover-shelf/workflows/build/badge.svg) ![CodeQL](https://github.com/kylekarpack/react-hardcover-shelf/workflows/CodeQL/badge.svg)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=kylekarpack_react-hardcover-shelf&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=kylekarpack_react-hardcover-shelf) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=kylekarpack_react-hardcover-shelf&metric=coverage)](https://sonarcloud.io/dashboard?id=kylekarpack_react-hardcover-shelf)
+
+This React component allows you to display a [Hardcover](https://hardcover.app) bookshelf in a React application, powered by the official Hardcover GraphQL API.
 
 ## Demo
-[Live Demo](https://kylekarpack.github.io/react-goodreads-shelf)
+
+[Live Demo](https://kylekarpack.github.io/react-hardcover-shelf)
 
 Preview
 
@@ -14,63 +16,54 @@ Preview
 ## Installation
 
 ```
-npm install --save react-goodreads-shelf
+pnpm install react-hardcover-shelf
 ```
+
 or
+
 ```
-yarn add react-goodreads-shelf
+yarn add react-hardcover-shelf
 ```
 
 ## Usage
 
+Generate an API key from your Hardcover account settings page (Account → API), then pass it to the component:
+
 ```jsx
 import React from "react";
-import GoodreadsBookshelf from "react-goodreads-shelf";
+import HardcoverShelf from "react-hardcover-shelf";
 
 export default function App() {
-  return (
-    <GoodreadsBookshelf userId="USER_ID_HERE" />
-  );
+  return <HardcoverShelf apiKey="YOUR_API_KEY" />;
 }
 ```
 
+When no user ID is supplied, the shelf of the API key's owner is displayed.
+
+> **Security note:** passing an API key from the browser exposes it to your visitors. For production apps, consider running a proxy that attaches the `Authorization` header server-side, and pass its URL via the `apiUrl` option instead.
+
 ## Customization
 
-You can also set some options as supported by the Goodreads list page:
-
-| Option | Type | Description | Default |
-| ------ | ---- | ----------- | ------- |
-| shelf  | string | The shelf from which to fetch books | read |
-| sort  | string | The field by which to sort the results returned | date_read |
-| limit  | number | The maximum number of books to be returned | 10 |
-| width | number | Minimum width allowed for each book | 100 |
-| search | string | Search text | "" |
+| Option         | Type     | Description                                                                                                             | Default                  |
+| -------------- | -------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| apiKey         | string   | An API key from a Hardcover account's settings page; a "Bearer" prefix is optional. Required unless apiUrl is provided. | -                        |
+| apiUrl         | string   | An alternative endpoint to send queries to; useful for proxies that keep the API key server-side                        | Hardcover API            |
+| userId         | string   | The numeric Hardcover user ID whose shelf to fetch                                                                      | The owner of the API key |
+| shelf          | string   | The shelf from which to fetch books ("read", "currently-reading", or "to-read")                                         | read                     |
+| sort           | string   | The field by which to sort the results returned (title, author, rating, avg_rating, date_read, date_added, or pages)    | date_read                |
+| order          | string   | The direction in which to sort the results ("a" for ascending or "d" for descending)                                    | d                        |
+| limit          | number   | The maximum number of books to be returned                                                                              | 10                       |
+| width          | number   | Minimum width allowed for each book                                                                                     | 100                      |
+| search         | string   | Filter fetched books by title and author                                                                                | ""                       |
+| groupBy        | string   | Group books by a field (e.g. "year")                                                                                    | -                        |
+| displayOptions | object   | Options for hiding book details, background images, and grid spacing                                                    | -                        |
+| filter         | function | A filter function to include only some of the fetched books                                                             | -                        |
 
 ## Development
-- `npm run start` to watch changes and build
-- `npm run storybook` to launch storybook for testing
+
+- `pnpm start` to watch changes and build
+- `pnpm storybook` to launch storybook for testing
 
 ## Contribution
 
 Please feel free to open issues or pull requests and I will review as promptly as I am able.
-
-### Contributors
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="http://www.kylekarpack.com"><img src="https://avatars.githubusercontent.com/u/2429580?v=4?s=100" width="100px;" alt="Kyle"/><br /><sub><b>Kyle</b></sub></a><br /><a href="https://github.com/kylekarpack/react-goodreads-shelf/commits?author=kylekarpack" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://thedaviddias.dev"><img src="https://avatars.githubusercontent.com/u/237229?v=4?s=100" width="100px;" alt="David Dias"/><br /><sub><b>David Dias</b></sub></a><br /><a href="#a11y-thedaviddias" title="Accessibility">️️️️♿️</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://eligundry.com/"><img src="https://avatars.githubusercontent.com/u/439936?v=4?s=100" width="100px;" alt="Eli Gundry"/><br /><sub><b>Eli Gundry</b></sub></a><br /><a href="https://github.com/kylekarpack/react-goodreads-shelf/commits?author=eligundry" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><img src="https://avatars.githubusercontent.com/u/17043634?v=4?s=100" width="100px;" alt="Bassem Ibrahim"/><br /><sub><b>Bassem Ibrahim</b></sub><br /><a href="https://github.com/kylekarpack/react-goodreads-shelf/commits?author=BassemMohamed" title="Code">💻</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->

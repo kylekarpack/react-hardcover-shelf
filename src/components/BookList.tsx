@@ -17,11 +17,14 @@ const shelfStyle = (options?: Props): CSSProperties => {
   return {
     gridTemplateColumns: `repeat(auto-fill, minmax(${width}, 1fr))`,
     columnGap: options?.displayOptions?.gridStyle?.columnGap ?? gap,
-    rowGap: options?.displayOptions?.gridStyle?.rowGap ?? gap
+    rowGap: options?.displayOptions?.gridStyle?.rowGap ?? gap,
   };
 };
 
-const BookList: FunctionComponent<{ books: BookType[]; options?: Props }> = ({ books, options }) => {
+const BookList: FunctionComponent<{ books: BookType[]; options?: Props }> = ({
+  books,
+  options,
+}) => {
   return (
     <ul className={`rhs-shelf ${styles.shelf}`} style={shelfStyle(options)} data-testid="book-list">
       {books.map((book) => {

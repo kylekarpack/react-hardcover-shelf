@@ -1,4 +1,4 @@
-import { render, waitFor } from "@testing-library/react";
+import { act, render, waitFor } from "@testing-library/react";
 import { afterEach, describe, it, expect, vi } from "vitest";
 import HardcoverShelf from "./HardcoverShelf";
 
@@ -6,7 +6,7 @@ const respondWith = (data: unknown) => {
   return vi.fn(async () => ({
     ok: true,
     status: 200,
-    json: () => Promise.resolve(data)
+    json: () => Promise.resolve(data),
   }));
 };
 
@@ -21,26 +21,33 @@ const sampleRow = (index: number) => {
       slug: `test-book-${index + 1}`,
       title: `Test Book ${index + 1}`,
       image: { url: `https://example.com/cover-${index + 1}.jpg` },
-      contributions: [{ author: { name: "Test Author" } }]
-    }
+      contributions: [{ author: { name: "Test Author" } }],
+    },
   };
 };
 
 describe("HardcoverShelf component", () => {
   afterEach(() => {
     // Restore the fetch stubbed below so later tests get the setup baseline again
-    vi.stubGlobal("fetch", vi.fn(() => Promise.resolve({ text: () => Promise.resolve([]) })));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => Promise.resolve({ text: () => Promise.resolve([]) })),
+    );
   });
 
   it("renders without crashing", async () => {
-    const shelf = render(<HardcoverShelf />);
-    expect(shelf.container).toBeInTheDocument();
+    await act(async () => {
+      const shelf = render(<HardcoverShelf />);
+      expect(shelf.container).toBeInTheDocument();
+    });
   });
 
   it("works with an api key", async () => {
     vi.stubGlobal("fetch", respondWith({ data: { me: { user_books: [sampleRow(0)] } } }));
 
-    const shelf = render(<HardcoverShelf apiKey="my-api-key" />);
+    const shelf = await act(async () => {
+      return render(<HardcoverShelf apiKey="my-api-key" />);
+    });
 
     await waitFor(() => expect(shelf.container.querySelector(".rhs-group")).not.toBeNull());
   });
@@ -48,9 +55,16 @@ describe("HardcoverShelf component", () => {
   it("passes props properly", async () => {
     vi.stubGlobal("fetch", respondWith({ data: { me: { user_books: [sampleRow(1)] } } }));
 
-    const shelf = render(
-      <HardcoverShelf apiKey="my-api-key" limit={15} shelf="currently-reading" sort="date_added" />
-    );
+    const shelf = await act(async () => {
+      return render(
+        <HardcoverShelf
+          apiKey="my-api-key"
+          limit={15}
+          shelf="currently-reading"
+          sort="date_added"
+        />,
+      );
+    });
 
     await waitFor(() => expect(shelf.container.querySelector(".rhs-group")).not.toBeNull());
   });
@@ -58,13 +72,17 @@ describe("HardcoverShelf component", () => {
   it("shows an error message when the request fails", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn(async () => ({ ok: false, status: 401 }))
+      vi.fn(async () => ({ ok: false, status: 401 })),
     );
 
-    const shelf = render(<HardcoverShelf apiKey="my-api-key" />);
+    const shelf = await act(async () => {
+      return render(<HardcoverShelf apiKey="my-api-key" />);
+    });
 
     await waitFor(() =>
-      expect(shelf.getByText(/Sorry, we couldn't load books right now: status 401/)).toBeInTheDocument()
+      expect(shelf.container.textContent).toContain(
+        "Sorry, we couldn't load books right now: Request to the Hardcover API failed with status 401",
+      ),
     );
   });
 });

@@ -19,7 +19,7 @@ const Cover: FunctionComponent<{ book: Book; options?: Props }> = ({ book, optio
 
         setIsInView(isIntersecting);
       },
-      { threshold: 0 }
+      { threshold: 0 },
     );
     if (root?.current) {
       observer.observe(root.current);
@@ -50,10 +50,10 @@ const Cover: FunctionComponent<{ book: Book; options?: Props }> = ({ book, optio
 
         return {
           backgroundImage,
-          opacity: isInView ? 1 : 0
+          opacity: isInView ? 1 : 0,
         };
       },
-    [imageUrl, isInView, options?.displayOptions?.hideBackgroundImages]
+    [imageUrl, isInView, options?.displayOptions?.hideBackgroundImages],
   );
 
   return (

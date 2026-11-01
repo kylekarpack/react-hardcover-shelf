@@ -1,5 +1,5 @@
-import GoodreadsBookshelf from "./components/GoodreadsBookshelf";
+import HardcoverShelf from "./components/HardcoverShelf";
 
-export { GoodreadsBookshelf };
+export { HardcoverShelf };
 export type { Props, Book } from "./types";
-export default GoodreadsBookshelf;
+export default HardcoverShelf;

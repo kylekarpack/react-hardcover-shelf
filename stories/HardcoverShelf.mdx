@@ -1,0 +1,13 @@
+import { Meta, Description, Story, Canvas } from "@storybook/blocks";
+
+import * as HardcoverShelfStories from "./0-HardcoverShelf.stories";
+
+<Meta of={HardcoverShelfStories} name="Documentation" />
+
+# react-hardcover-shelf
+
+This React component allows you to display a [Hardcover](https://hardcover.app) bookshelf in a React application, powered by the official Hardcover GraphQL API.
+
+<Canvas>
+  <Story of={HardcoverShelfStories.MinimalShelf} />
+</Canvas>

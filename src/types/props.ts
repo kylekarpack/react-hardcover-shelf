@@ -2,7 +2,14 @@ import { CSSProperties } from "react";
 import { Book } from "./book";
 
 /** The fields available for sorting on Hardcover */
-export type SortKey = "title" | "author" | "rating" | "avg_rating" | "date_read" | "date_added" | "pages";
+export type SortKey =
+  | "title"
+  | "author"
+  | "rating"
+  | "avg_rating"
+  | "date_read"
+  | "date_added"
+  | "pages";
 
 type GroupBy = "year";
 type Shelf = "read" | "currently-reading" | "to-read" | string;

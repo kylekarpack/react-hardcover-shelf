@@ -38,6 +38,7 @@
     "build-storybook": "STORYBOOK=true storybook build -o docs-build",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
+    "lint:check": "oxlint",
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
     "fix": "oxfmt --write . && oxlint --fix",

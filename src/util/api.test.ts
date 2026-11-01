@@ -18,9 +18,9 @@ const respondWith = (data: unknown) => {
       return {
         ok: true,
         status: 200,
-        json: () => Promise.resolve(data)
+        json: () => Promise.resolve(data),
       };
-    })
+    }),
   );
 };
 
@@ -44,9 +44,9 @@ const sampleRow = (index: number, overrides: Record<string, unknown> = {}) => {
       rating: 3.9,
       release_year: 2019,
       image: { url: `https://example.com/cover-${index + 1}.jpg` },
-      contributions: [{ author: { name: "Test Author" } }]
+      contributions: [{ author: { name: "Test Author" } }],
     },
-    ...overrides
+    ...overrides,
   };
 };
 
@@ -70,7 +70,7 @@ describe("api", () => {
 
     expect(lastOptions?.headers).toEqual({
       "content-type": "application/json",
-      authorization: "Bearer abc123"
+      authorization: "Bearer abc123",
     });
   });
 
@@ -102,7 +102,7 @@ describe("api", () => {
       pages: 123,
       releaseYear: 2019,
       dateRead: new Date("2022-06-01"),
-      dateAdded: new Date("2022-05-10")
+      dateAdded: new Date("2022-05-10"),
     });
   });
 
@@ -116,11 +116,11 @@ describe("api", () => {
               book: { ...sampleRow(1).book, title: "2021 Book" },
               date_added: "2021-03-01",
               last_read_date: "",
-              user_book_reads: []
-            })
-          ]
-        }
-      }
+              user_book_reads: [],
+            }),
+          ],
+        },
+      },
     });
 
     const groups = await fetchAllBooks({ apiKey: "my-api-key", groupBy: "year" });
@@ -151,7 +151,7 @@ describe("api", () => {
 
     const [bookGroup] = await fetchAllBooks({
       apiKey: "my-api-key",
-      filter: (book) => book.title === "Test Book 3"
+      filter: (book) => book.title === "Test Book 3",
     });
 
     expect(bookGroup.books.length).toBe(1);
@@ -168,12 +168,12 @@ describe("api", () => {
               book: {
                 ...sampleRow(30).book,
                 title: "Special: The Club",
-                contributions: [{ author: { name: "Someone Else" } }]
-              }
-            })
-          ]
-        }
-      }
+                contributions: [{ author: { name: "Someone Else" } }],
+              },
+            }),
+          ],
+        },
+      },
     });
 
     const [bookGroup] = await fetchAllBooks({ apiKey: "my-api-key", search: "The Club" });
@@ -189,10 +189,10 @@ describe("api", () => {
           user_books: [
             sampleRow(0, { book: { ...sampleRow(0).book, title: "Zulu Book" } }),
             sampleRow(1, { book: { ...sampleRow(1).book, title: "Alpha Book" } }),
-            sampleRow(2, { book: { ...sampleRow(2).book, title: "Mid Book" } })
-          ]
-        }
-      }
+            sampleRow(2, { book: { ...sampleRow(2).book, title: "Mid Book" } }),
+          ],
+        },
+      },
     });
 
     const ascending = await fetchAllBooks({ apiKey: "my-api-key", sort: "title", order: "a" });
@@ -225,9 +225,9 @@ describe("api", () => {
   });
 
   it("errors on unsupported shelf names", async () => {
-    await expect(fetchAllBooks({ apiKey: "key", shelf: "currently-reading-in-paris" })).rejects.toThrow(
-      /Unsupported shelf/
-    );
+    await expect(
+      fetchAllBooks({ apiKey: "key", shelf: "currently-reading-in-paris" }),
+    ).rejects.toThrow(/Unsupported shelf/);
   });
 
   it("errors on GraphQL errors", async () => {
@@ -239,7 +239,7 @@ describe("api", () => {
   it("errors on http failures", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn(async () => ({ ok: false, status: 401 }))
+      vi.fn(async () => ({ ok: false, status: 401 })),
     );
 
     await expect(fetchAllBooks({ apiKey: "my-api-key" })).rejects.toThrow("status 401");

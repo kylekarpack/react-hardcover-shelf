@@ -9,7 +9,10 @@ const fetchStub = (data: unknown) => {
 describe("shelf hook", () => {
   afterEach(() => {
     // Restore the fetch stubbed below so later tests get the setup baseline again
-    vi.stubGlobal("fetch", vi.fn(() => Promise.resolve({ text: () => Promise.resolve([]) })));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => Promise.resolve({ text: () => Promise.resolve([]) })),
+    );
   });
 
   it("handles loading state", async () => {

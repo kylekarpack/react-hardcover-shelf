@@ -19,7 +19,10 @@ const Placeholder: FunctionComponent = () => {
           style={{ fill: "#ffffff", stroke: "none" }}
           d="M77 84C83.6869 85.3802 90.3853 87.037 97 88.7315C103.67 90.4403 109.474 92.3156 113 85C105.981 83.9673 98.9214 81.7562 92 80.1157C85.4991 78.5749 80.3963 76.9541 77 84z"
         />
-        <path style={{ fill: "#000000", stroke: "none" }} d="M110 89L111 90L110 89M54 91L55 92L54 91z" />
+        <path
+          style={{ fill: "#000000", stroke: "none" }}
+          d="M110 89L111 90L110 89M54 91L55 92L54 91z"
+        />
         <path style={{ fill: "#aaaaaa", stroke: "none" }} d="M122 108L123 109L122 108z" />
         <path
           style={{ fill: "#000000", stroke: "none" }}
@@ -34,7 +37,10 @@ const Placeholder: FunctionComponent = () => {
           d="M124 120L125 121L124 120M69 122L70 123L69 122M37 132L38 133L37 132M50 132L51 133L50 132M42 138L43 139L42 138M109 138L110 139L109 138z"
         />
         <path style={{ fill: "#555555", stroke: "none" }} d="M87 143L88 144L87 143z" />
-        <path style={{ fill: "#000000", stroke: "none" }} d="M99 150L100 151L99 150M82 151L83 152L82 151z" />
+        <path
+          style={{ fill: "#000000", stroke: "none" }}
+          d="M99 150L100 151L99 150M82 151L83 152L82 151z"
+        />
       </svg>
     </div>
   );
