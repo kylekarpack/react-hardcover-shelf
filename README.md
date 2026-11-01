@@ -1,13 +1,10 @@
 # react-hardcover-shelf
 
-![build](https://github.com/kylekarpack/react-hardcover-shelf/workflows/build/badge.svg) ![CodeQL](https://github.com/kylekarpack/react-hardcover-shelf/workflows/CodeQL/badge.svg)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=kylekarpack_react-hardcover-shelf&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=kylekarpack_react-hardcover-shelf) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=kylekarpack_react-hardcover-shelf&metric=coverage)](https://sonarcloud.io/dashboard?id=kylekarpack_react-hardcover-shelf)
-
 This React component allows you to display a [Hardcover](https://hardcover.app) bookshelf in a React application, powered by the official Hardcover GraphQL API.
 
 ## Demo
 
-[Live Demo](https://kylekarpack.github.io/react-hardcover-shelf)
+<!--[Live Demo](https://kylekarpack.github.io/react-hardcover-shelf)-->
 
 Preview
 
@@ -19,15 +16,11 @@ Preview
 pnpm install react-hardcover-shelf
 ```
 
-or
-
-```
-yarn add react-hardcover-shelf
-```
+(or with a package manager of your choice)
 
 ## Usage
 
-Create a scoped API key from your Hardcover account ([Account → API](https://hardcover.app/account/api/keys/new)), then pass it to the component:
+Create a scoped API key from your Hardcover account ([Account → API](https://hardcover.app/account/api/keys/new?scope=read:library:public+read:me:content+read:catalog)), then pass it to the component:
 
 ```jsx
 import React from "react";
@@ -42,7 +35,7 @@ When no `userId` is supplied, the shelf of the API key's owner is displayed. `us
 
 ### API key scopes
 
-Hardcover lets you pick exactly which scopes an API key grants. This widget only reads your public shelf data, so **create the key with read-only scopes** — a link that pre-selects the recommended set on the New API Key form:
+Hardcover lets you pick exactly which scopes an API key grants. This widget only reads your public shelf data, so **create the key with read-only scopes**:
 
 [Generate a scoped API key →](https://hardcover.app/account/api/keys/new?scope=read:library:public+read:me:content+read:catalog)
 
@@ -52,9 +45,9 @@ Hardcover lets you pick exactly which scopes an API key grants. This widget only
 | `read:me:content`     | Your public profile (id, username, name, avatar), used when `userId` is omitted |
 | `read:catalog`        | Hardcover's public book catalog (covers, authors, descriptions)                 |
 
-With these scopes, an exposed key cannot modify your library, cannot read private or followers-only entries, and cannot see your email — the worst an attacker can do is read data that is already public on your Hardcover profile. Do not select any write scopes.
+With these scopes, an exposed key cannot modify your library, cannot read private or followers-only entries, and cannot see your email. Do not select any write scopes.
 
-> **Security note:** a scoped key kept in the browser is still visible to visitors and usable for rate-limit-burning reads. That is fine for personal sites and blogs. If you need stronger isolation, run a small proxy that attaches the `Authorization` header server-side and pass its URL via the `apiUrl` option instead.
+> **Security note:** a scoped key kept in the browser is still visible to visitors and usable for rate-limit-burning reads. That is fine for personal sites and blogs. If you need stronger isolation, you can run a small proxy that attaches the `Authorization` header server-side and pass its URL via the `apiUrl` option instead.
 
 ## Customization
 
@@ -75,7 +68,7 @@ With these scopes, an exposed key cannot modify your library, cannot read privat
 
 ## Development
 
-This project uses [Vite+](https://viteplus.dev), the unified toolchain that bundles Vite, Vitest, linting, and formatting behind one CLI:
+This project uses [Vite+](https://viteplus.dev).
 
 - `pnpm dev` to run the demo page dev server
 - `pnpm storybook` to launch storybook for testing
