@@ -45,7 +45,6 @@
     "check:fix": "vp check --fix",
     "lint": "vp lint",
     "lint:fix": "vp lint --fix",
-    "lint:check": "vp lint",
     "format": "vp fmt --write .",
     "format:check": "vp fmt --check .",
     "clean": "rm -rf dist",
@@ -55,7 +54,7 @@
   "devDependencies": {
     "@storybook/addon-docs": "10.6.5",
     "@storybook/react": "10.6.5",
-    "@storybook/react-vite": "^10.6.5",
+    "@storybook/react-vite": "10.6.5",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
     "@types/node": "^26.6.6",
@@ -67,7 +66,7 @@
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "release-it": "^21.1.2",
-    "storybook": "^10.6.5",
+    "storybook": "10.6.5",
     "typescript": "7.0.2",
     "vite": "catalog:",
     "vite-plus": "catalog:",
@@ -80,6 +79,7 @@
   "engines": {
     "node": ">=22"
   },
+  "packageManager": "pnpm@12.16.1",
   "release-it": {
     "github": {
       "release": true,

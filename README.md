@@ -13,7 +13,7 @@ Preview
 ## Installation
 
 ```
-pnpm install react-hardcover-shelf
+pnpm add react-hardcover-shelf
 ```
 
 (or with a package manager of your choice)
@@ -73,6 +73,8 @@ With these scopes, an exposed key cannot modify your library, cannot read privat
 ## Development
 
 This project uses [Vite+](https://viteplus.dev).
+
+Copy `.env.example` to `.env` and add a scoped Hardcover API key to try the local demo. The key is exposed to the browser; use a read-only key and do not commit `.env`.
 
 - `pnpm dev` to run the demo page dev server
 - `pnpm storybook` to launch storybook for testing

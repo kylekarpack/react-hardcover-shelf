@@ -1,4 +1,3 @@
-// vp migrate: merged .oxlintrc.json (70071b33518c2408813894b9bc30b90f).
 import react from "@vitejs/plugin-react";
 import { defineConfig, lazyPlugins } from "vite-plus";
 import { inlineCssPlugin } from "./plugins/inline-css";
@@ -6,9 +5,6 @@ import { inlineCssPlugin } from "./plugins/inline-css";
 export default defineConfig({
   staged: {
     "*": "vp check --fix",
-  },
-  fmt: {
-    ignorePatterns: [],
   },
   lint: {
     plugins: ["typescript", "unicorn", "oxc"],
