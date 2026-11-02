@@ -38,7 +38,7 @@
     "dev": "vp dev",
     "build": "vp pack",
     "preview": "vp preview",
-    "prepublish": "pnpm build",
+    "prepublishOnly": "pnpm build",
     "storybook": "STORYBOOK=true storybook dev -p 6006",
     "build-storybook": "STORYBOOK=true storybook build -o docs-build",
     "check": "vp check",
@@ -79,7 +79,7 @@
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "engines": {
-    "node": ">=26"
+    "node": ">=22"
   },
   "engineStrict": true,
   "release-it": {
@@ -89,9 +89,10 @@
     },
     "hooks": {
       "before:init": [
-        "npm run test"
+        "pnpm check",
+        "pnpm test"
       ],
-      "after:bump": "npm run build"
+      "after:bump": "pnpm build"
     }
   }
 }
