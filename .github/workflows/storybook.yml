@@ -8,6 +8,7 @@ on:
 
 # Grants the workflow permission to publish to Pages
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
@@ -25,7 +26,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Vite+
         uses: voidzero-dev/setup-vp@v1.22.0
@@ -37,13 +38,13 @@ jobs:
         run: vp run build-storybook
 
       - name: Set up Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: docs-build
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
