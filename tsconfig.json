@@ -1,5 +1,5 @@
 {
-  "include": ["src", "stories", ".storybook", "sample", "vitest.setup.ts"],
+  "include": ["src", "stories", ".storybook", "sample", "vitest.setup.ts", "plugins"],
   "compilerOptions": {
     "jsx": "react-jsx",
     "target": "ES2020",
