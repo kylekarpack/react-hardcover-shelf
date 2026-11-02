@@ -4,7 +4,7 @@ This React component allows you to display a [Hardcover](https://hardcover.app) 
 
 ## Demo
 
-<!--[Live Demo](https://kylekarpack.github.io/react-hardcover-shelf)-->
+[Live Demo](https://kylekarpack.github.io/react-hardcover-shelf)
 
 Preview
 
