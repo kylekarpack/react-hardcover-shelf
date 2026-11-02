@@ -81,7 +81,6 @@
   "engines": {
     "node": ">=22"
   },
-  "engineStrict": true,
   "release-it": {
     "github": {
       "release": true,
